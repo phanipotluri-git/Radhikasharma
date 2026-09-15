@@ -371,3 +371,7 @@ button.gloss[aria-expanded=true]{background:var(--accent-tint);border-bottom-sty
 .slot input:disabled+span{opacity:.4;cursor:not-allowed;text-decoration:line-through;
   background:var(--band);border-color:var(--rule-2)}
 .slot input:disabled+span:hover{border-color:var(--rule-2)}
+
+/* a slot this device has already asked for (local only -- not a reservation) */
+.slot.requested span{border-color:var(--accent);border-style:dashed}
+.slot.requested span::after{content:" · requested";font-size:11px;color:var(--accent)}

@@ -5,6 +5,18 @@
   </div></section>
 
   <section><div class="wrap">
+    <div id="booked" class="nutshell" hidden style="max-width:74ch;margin-bottom:8px">
+      <span class="eyebrow">Request sent</span>
+      <h2 id="booked-head" style="margin:10px 0 14px;font-size:1.5rem"></h2>
+      <p id="booked-detail" style="margin-bottom:14px"></p>
+      <p>The clinic will confirm on WhatsApp, <strong>usually the same day</strong>. Please treat the time as held only once that reply arrives.</p>
+      <p style="margin-top:14px;font-size:14px;color:var(--muted)">Did WhatsApp not open? Some browsers block it. Use the button below and the message will already be written for you.</p>
+      <div class="cta-row" style="margin-top:20px">
+        <a class="btn" id="booked-wa" href="#" target="_blank" rel="noopener">Open WhatsApp</a>
+        <button type="button" class="btn ghost" id="booked-again">Request another time</button>
+      </div>
+    </div>
+
     <form id="bookform" novalidate>
       <div class="hero-grid" style="padding-top:0;align-items:start">
         <div>

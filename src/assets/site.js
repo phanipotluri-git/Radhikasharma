@@ -115,6 +115,19 @@
         if (!gone) left++;
       });
 
+      // slots this device has already requested, for the chosen date
+      var mine = [];
+      try {
+        mine = JSON.parse(localStorage.getItem('alc.requested') || '[]')
+          .filter(function (r) { return r.date === date.value; })
+          .map(function (r) { return r.slot; });
+      } catch (e) { /* storage unavailable */ }
+
+      slotInputs.forEach(function (inp) {
+        inp.closest('.slot').classList.toggle(
+          'requested', mine.indexOf(inp.value) > -1 && !inp.disabled);
+      });
+
       if (slotNote) {
         slotNote.hidden = !(isToday && left === 0);
       }
@@ -122,6 +135,15 @@
 
     date.addEventListener('change', refreshSlots);
     refreshSlots();
+
+    var again = document.getElementById('booked-again');
+    if (again) again.addEventListener('click', function () {
+      document.getElementById('booked').hidden = true;
+      bookform.hidden = false;
+      bookform.querySelectorAll('input[name=slot]').forEach(function (i) { i.checked = false; });
+      refreshSlots();
+      bookform.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
 
     function fieldError(el, show, message) {
       var msg = el.closest('.field').querySelector('.err');
@@ -210,8 +232,32 @@
       lines.push('', 'Preferred: ' + pretty + ', ' + slot.value, '', 'About: ' + val('bf-about'));
       if (val('bf-note')) lines.push('Note: ' + val('bf-note'));
 
-      window.open('https://wa.me/' + CLINIC_NUMBER + '?text=' +
-                  encodeURIComponent(lines.join('\n')), '_blank', 'noopener');
+      var waUrl = 'https://wa.me/' + CLINIC_NUMBER + '?text=' +
+                  encodeURIComponent(lines.join('\n'));
+      window.open(waUrl, '_blank', 'noopener');
+
+      // Remember it on THIS DEVICE only, so the same person is reminded rather
+      // than silently re-requesting the same slot. It cannot affect anyone
+      // else's view -- there is no shared state without a server.
+      try {
+        var key = 'alc.requested';
+        var mine = JSON.parse(localStorage.getItem(key) || '[]')
+          .filter(function (r) { return r.date >= new Date().toISOString().slice(0, 10); });
+        mine.push({ date: dv, slot: slot.value });
+        localStorage.setItem(key, JSON.stringify(mine));
+      } catch (e) { /* private browsing, blocked storage -- not important */ }
+
+      document.getElementById('booked-head').textContent =
+        'Thank you, ' + name.value.trim().split(' ')[0] + '.';
+      document.getElementById('booked-detail').innerHTML =
+        'We have your request for <strong>' + pretty + '</strong> at <strong>' +
+        slot.value + '</strong>.';
+      document.getElementById('booked-wa').href = waUrl;
+      var panel = document.getElementById('booked');
+      panel.hidden = false;
+      bookform.hidden = true;
+      panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      refreshSlots();
     });
   }
 
