@@ -306,12 +306,12 @@ form .field{margin-bottom:22px}
 form label{display:block;font-size:13px;font-weight:500;letter-spacing:.04em;color:var(--ink);margin-bottom:7px}
 form label .req{color:var(--accent)}
 form label .opt{font-weight:400;letter-spacing:0;color:var(--muted);text-transform:none}
-form input[type=text],form select,form textarea{
+form input[type=text],form input[type=tel],form input[type=number],form input[type=date],form input[type=email],form select,form textarea{
   width:100%;font-family:inherit;font-size:16px;color:var(--body);background:var(--paper);
   border:1px solid var(--rule);border-radius:2px;padding:12px 14px;transition:border-color 200ms var(--ease)}
 form textarea{resize:vertical;min-height:84px;line-height:1.55}
-form input:hover,form select:hover,form textarea:hover{border-color:var(--muted)}
-form input:focus,form select:focus,form textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint)}
+form input:not([type=radio]):hover,form select:hover,form textarea:hover{border-color:var(--muted)}
+form input:not([type=radio]):focus,form select:focus,form textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint)}
 form [aria-invalid=true]{border-color:var(--alert)}
 form select{appearance:none;cursor:pointer;
   background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%236C6559' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
@@ -319,3 +319,25 @@ form select{appearance:none;cursor:pointer;
 form .hint{margin-top:7px;font-size:13px;color:var(--muted);line-height:1.5}
 form .err{margin-top:7px;font-size:13px;color:var(--alert)}
 form .formfoot{margin-top:28px;padding-top:24px;border-top:1px solid var(--rule-2)}
+
+/* two-up field rows, collapsing on small screens */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr;gap:0}}
+
+/* time slots */
+fieldset.slots{border:none;padding:0;margin:0 0 22px}
+fieldset.slots legend{padding:0;font-size:13px;font-weight:500;letter-spacing:.04em;color:var(--ink);margin-bottom:7px}
+fieldset.slots legend .req{color:var(--accent)}
+.slotgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media(max-width:900px){.slotgrid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:420px){.slotgrid{grid-template-columns:repeat(2,1fr)}}
+.slot{position:relative;margin:0}
+.slot input{position:absolute;opacity:0;width:1px;height:1px}
+.slot span{display:block;text-align:center;padding:11px 4px;font-size:14px;
+  background:var(--paper);border:1px solid var(--rule);border-radius:2px;color:var(--body);
+  cursor:pointer;transition:border-color 200ms var(--ease)}
+.slot span:hover{border-color:var(--muted)}
+.slot input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.slot input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--ground);font-weight:500}
+
+form input[type=date]{min-height:47px}

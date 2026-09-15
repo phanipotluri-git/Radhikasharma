@@ -1,19 +1,40 @@
   <section class="first"><div class="wrap">
     <div class="shead" style="margin-bottom:0">
       <span class="eyebrow">Book an appointment</span>
-      <h1 style="font-size:clamp(2.2rem,5vw,3.4rem);max-width:20ch">Tell us a little, then send it on WhatsApp.</h1>
-      <p class="lede">Fill this in and it opens WhatsApp with your details already written out — you just press send. Appointments are confirmed by reply, usually the same day. Nothing you type here is stored on this website.</p>
+      <h1 style="font-size:clamp(2.2rem,5vw,3.4rem);max-width:20ch">Pick a time, then send it on WhatsApp.</h1>
+      <p class="lede">Fill this in and it opens WhatsApp with everything written out — you just press send. Nothing you type here is stored on this website.</p>
     </div>
   </div></section>
 
   <section><div class="wrap">
-    <div class="hero-grid" style="padding-top:0;align-items:start">
-      <div>
-        <form id="bookform" novalidate>
-          <div class="field">
-            <label for="bf-name">Your name <span class="req" aria-hidden="true">*</span></label>
-            <input id="bf-name" name="name" type="text" autocomplete="name" required>
-            <p class="err" id="err-name" hidden>Please tell us your name.</p>
+    <form id="bookform" novalidate>
+      <div class="hero-grid" style="padding-top:0;align-items:start">
+        <div>
+          <p class="eyebrow" style="margin-bottom:20px">Your details</p>
+
+          <div class="grid2">
+            <div class="field">
+              <label for="bf-name">Patient name <span class="req" aria-hidden="true">*</span></label>
+              <input id="bf-name" name="name" type="text" autocomplete="name" required>
+              <p class="err" hidden>Please tell us the patient's name.</p>
+            </div>
+
+            <div class="field">
+              <label for="bf-age">Age <span class="req" aria-hidden="true">*</span></label>
+              <input id="bf-age" name="age" type="number" min="0" max="120" inputmode="numeric" required>
+              <p class="err" hidden>Please give an age.</p>
+            </div>
+
+            <div class="field">
+              <label for="bf-mobile">Mobile number <span class="req" aria-hidden="true">*</span></label>
+              <input id="bf-mobile" name="mobile" type="tel" inputmode="tel" autocomplete="tel" required>
+              <p class="err" hidden>Please give a mobile number we can reach you on.</p>
+            </div>
+
+            <div class="field">
+              <label for="bf-city">Area or city <span class="opt">optional</span></label>
+              <input id="bf-city" name="city" type="text" autocomplete="address-level2" placeholder="e.g. Jubilee Hills">
+            </div>
           </div>
 
           <div class="field">
@@ -21,30 +42,52 @@
             <select id="bf-who" name="who">
               <option value="Myself">Myself</option>
               <option value="My child">My child</option>
+              <option value="A parent">A parent</option>
               <option value="Someone else">Someone else</option>
             </select>
           </div>
 
+          <p class="eyebrow" style="margin:38px 0 20px">When would suit you</p>
+
+          <div class="grid2">
+            <div class="field">
+              <label for="bf-date">Preferred date <span class="req" aria-hidden="true">*</span></label>
+              <input id="bf-date" name="date" type="date" required>
+              <p class="err" hidden>Please choose a date. The clinic is closed on Sundays.</p>
+            </div>
+          </div>
+
+          <fieldset class="slots">
+            <legend>Preferred time <span class="req" aria-hidden="true">*</span></legend>
+            <p class="hint" style="margin:0 0 14px">Consultations run 1 pm to 6 pm, Monday to Saturday.</p>
+            <div class="slotgrid">
+              <label class="slot"><input type="radio" name="slot" value="1:00 – 1:30 pm"><span>1:00 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="1:30 – 2:00 pm"><span>1:30 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="2:00 – 2:30 pm"><span>2:00 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="2:30 – 3:00 pm"><span>2:30 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="3:00 – 3:30 pm"><span>3:00 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="3:30 – 4:00 pm"><span>3:30 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="4:00 – 4:30 pm"><span>4:00 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="4:30 – 5:00 pm"><span>4:30 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="5:00 – 5:30 pm"><span>5:00 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="5:30 – 6:00 pm"><span>5:30 pm</span></label>
+            </div>
+            <p class="err" id="err-slot" hidden>Please pick a time.</p>
+          </fieldset>
+
+          <p class="eyebrow" style="margin:38px 0 20px">What it is about</p>
+
           <div class="field">
-            <label for="bf-about">What is it about?</label>
+            <label for="bf-about">Reason for the consultation</label>
             <select id="bf-about" name="about">
               <option value="Allergy testing">Allergy testing</option>
               <option value="Immunotherapy">Immunotherapy</option>
               <option value="Asthma or breathing problems">Asthma or breathing problems</option>
               <option value="Breathing / lung tests">Breathing or lung tests</option>
+              <option value="Snoring or sleep problems">Snoring or sleep problems</option>
               <option value="Smoking cessation">Smoking cessation</option>
               <option value="A second opinion">A second opinion</option>
               <option value="Not sure yet">Not sure yet</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="bf-when">When suits you?</label>
-            <select id="bf-when" name="when">
-              <option value="The next available slot">The next available slot</option>
-              <option value="A weekday morning">A weekday morning</option>
-              <option value="A weekday afternoon">A weekday afternoon</option>
-              <option value="Saturday">Saturday</option>
             </select>
           </div>
 
@@ -56,29 +99,37 @@
 
           <div class="formfoot">
             <button type="submit" class="btn lg">Open WhatsApp with these details</button>
-            <p class="hint" style="margin-top:14px">This opens WhatsApp on your phone or computer with the message ready. You send it yourself, so nothing leaves your device until you do. See the <a href="/privacy/">privacy notice</a>.</p>
+            <p class="hint" style="margin-top:14px">This opens WhatsApp with the message ready. You send it yourself, so nothing leaves your device until you do. See the <a href="/privacy/">privacy notice</a>.</p>
           </div>
-        </form>
-
-        <noscript>
-          <p style="margin-top:8px;font-size:15px;color:var(--muted)">This form needs JavaScript to open WhatsApp for you. You can message or call the clinic directly instead:</p>
-          <div class="cta-row">
-            <a class="btn" href="https://wa.me/919701864848?text=Hello%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">WhatsApp the clinic</a>
-            <a class="btn ghost tnum" href="tel:+919701864848">Call +91 97018 64848</a>
-          </div>
-        </noscript>
-      </div>
-
-      <aside class="herocard">
-        <p class="eyebrow">In a hurry?</p>
-        <h3>Skip the form</h3>
-        <p style="margin-top:14px;color:var(--muted);font-size:15px">If you would rather just write, or ring, that is completely fine — the form only exists to save you repeating yourself.</p>
-        <div class="cta-row" style="margin-top:20px">
-          <a class="btn" href="https://wa.me/919701864848?text=Hello%2C%20I%27d%20like%20to%20book%20an%20appointment%20at%20Dr.%20Radhika%27s%20Allergy%20%26%20Lung%20Clinic." target="_blank" rel="noopener">WhatsApp the clinic</a>
         </div>
-        <p class="hcfoot"><a class="tnum" href="tel:+919701864848">+91 97018 64848</a><br>Mon–Sat, 11 am – 6 pm</p>
-      </aside>
-    </div>
+
+        <aside>
+          <div class="herocard">
+            <p class="eyebrow">Important</p>
+            <h3 style="font-size:1.24rem">This requests a time — it does not confirm one</h3>
+            <p style="margin-top:14px;color:var(--muted);font-size:15px">The clinic diary is not on this website, so the times above are not checked for availability. <strong style="color:var(--ink);font-weight:500">Your appointment exists once the clinic replies to confirm it</strong> — usually the same day. If the slot you picked has gone, you will be offered the nearest one.</p>
+          </div>
+
+          <div class="herocard" style="margin-top:20px">
+            <p class="eyebrow">In a hurry?</p>
+            <h3 style="font-size:1.24rem">Skip the form</h3>
+            <p style="margin-top:14px;color:var(--muted);font-size:15px">If you would rather just write, or ring, that is completely fine.</p>
+            <div class="cta-row" style="margin-top:18px">
+              <a class="btn" href="https://wa.me/919701864848?text=Hello%2C%20I%27d%20like%20to%20book%20an%20appointment%20at%20Dr.%20Radhika%27s%20Allergy%20%26%20Lung%20Clinic." target="_blank" rel="noopener">WhatsApp the clinic</a>
+            </div>
+            <p class="hcfoot"><a class="tnum" href="tel:+919701864848">+91 97018 64848</a><br>Mon–Sat, 11 am – 6 pm</p>
+          </div>
+        </aside>
+      </div>
+    </form>
+
+    <noscript>
+      <p style="margin-top:8px;font-size:15px;color:var(--muted)">This form needs JavaScript to open WhatsApp for you. You can message or call the clinic directly instead:</p>
+      <div class="cta-row">
+        <a class="btn" href="https://wa.me/919701864848?text=Hello%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">WhatsApp the clinic</a>
+        <a class="btn ghost tnum" href="tel:+919701864848">Call +91 97018 64848</a>
+      </div>
+    </noscript>
   </div></section>
 
   <section class="band"><div class="wrap">
