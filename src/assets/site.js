@@ -277,6 +277,100 @@
     });
   }
 
+  /* ---------------- plain-English glossary ----------------
+     The clinical writing on this site is deliberately precise, which means it
+     uses real terms. Rather than dilute it, the first appearance of each term
+     on a page becomes a tappable button revealing a one-sentence explanation.
+     Without JavaScript the text is untouched and still reads correctly. */
+  var GLOSSARY = {
+    'IgE': 'The antibody behind true, immediate allergy. A test looks for IgE against one specific thing — dust mite, peanut — to see whether your immune system is primed to react to it.',
+    'IgG': 'A different antibody, which simply records what you have been exposed to. Making IgG to a food usually just means you eat that food.',
+    'wheal': 'The raised pale bump, like a nettle sting, that comes up where a skin test is positive. Its width in millimetres is what gets measured.',
+    'spirometry': 'A breathing test. You blow as hard and as long as you can into a tube, and it measures how much air you can move and how fast.',
+    'FeNO': 'A test measuring nitric oxide in your breath. Higher levels suggest the particular kind of airway inflammation that responds well to inhaled steroids.',
+    'reversibility': 'Spirometry done twice, before and after a reliever inhaler. If the numbers improve markedly the narrowing is reversible, which points towards asthma.',
+    'bronchodilator': 'A reliever medicine that opens narrowed airways — the blue inhaler most people recognise.',
+    'COPD': 'Chronic obstructive pulmonary disease: long-term airway narrowing that does not fully reverse, most often caused by smoking or years of smoke exposure.',
+    'rhinitis': 'Inflammation of the lining of the nose — sneezing, blockage, running, itching.',
+    'urticaria': 'Hives. Itchy raised welts that come up and fade again within hours.',
+    'anaphylaxis': 'A severe allergic reaction affecting the whole body, coming on within minutes. It needs adrenaline immediately.',
+    'eosinophil': 'A type of white blood cell involved in allergic inflammation. A raised count in the blood helps guide asthma treatment.',
+    'bronchiectasis': 'Airways permanently widened and damaged, usually after infection, so mucus pools in them and chest infections keep returning.',
+    'sublingual': 'Under the tongue — immunotherapy taken at home as drops or a tablet held under the tongue.',
+    'subcutaneous': 'Under the skin — immunotherapy given as an injection at the clinic.',
+    'allergen': 'The specific thing your immune system reacts to: a house dust mite, a pollen, a food, a drug.',
+    'biologics': 'Injected treatments that block one specific step in the allergic pathway. Used in severe asthma when inhalers are not enough.',
+    'peak flow': 'A simple handheld meter measuring how fast you can blow air out. Useful for tracking asthma at home day to day.',
+    'montelukast': 'A tablet blocking one of the chemical messengers in allergic inflammation. Used in asthma and allergic rhinitis.',
+    'antihistamine': 'A tablet blocking histamine, the chemical released during an allergic reaction. It relieves the symptom without changing the underlying allergy.',
+    'histamine': 'The chemical released by immune cells during an allergic reaction — the cause of itch, swelling and a streaming nose.',
+    'sensitisation': 'Having IgE against something: your immune system is primed to react, even though you may have no symptoms at all. Sensitisation is not the same as allergy.'
+  };
+
+  (function glossary() {
+    var main = document.querySelector('main');
+    if (!main) return;
+
+    // longest first, so "peak flow" wins over "flow" and "IgE" is not eaten by a
+    // shorter partial match
+    var terms = Object.keys(GLOSSARY).sort(function (a, b) { return b.length - a.length; });
+    var done = {};
+    var SKIP = /^(A|BUTTON|H1|H2|H3|H4|CODE|LEGEND|LABEL|CITE|SUMMARY)$/;
+
+    terms.forEach(function (term) {
+      var re = new RegExp('(^|[^\\w-])(' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')(?![\\w-])',
+                          term === term.toLowerCase() ? 'i' : '');
+      var walker = document.createTreeWalker(main, NodeFilter.SHOW_TEXT, {
+        acceptNode: function (node) {
+          if (done[term]) return NodeFilter.FILTER_REJECT;
+          for (var el = node.parentElement; el && el !== main; el = el.parentElement) {
+            if (SKIP.test(el.tagName) || el.classList.contains('gloss') ||
+                el.classList.contains('nutshell')) return NodeFilter.FILTER_REJECT;
+          }
+          return re.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+        }
+      });
+
+      var node = walker.nextNode();
+      if (!node) return;
+      var m = node.nodeValue.match(re);
+      if (!m) return;
+
+      var at = node.nodeValue.indexOf(m[2], m.index);
+      var after = node.splitText(at);
+      after.splitText(m[2].length);
+
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'gloss';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.textContent = after.nodeValue;
+
+      var def = document.createElement('span');
+      def.className = 'glossdef';
+      def.hidden = true;
+      def.textContent = GLOSSARY[term];
+
+      after.parentNode.replaceChild(btn, after);
+
+      // Append the definition INSIDE the paragraph, as its last child. A span is
+      // valid phrasing content there, so this neither splits the sentence nor
+      // sits between two <p> elements -- which would silently break the
+      // ".prose p + p" rule that spaces paragraphs apart.
+      var host = btn.closest('p, li');
+      if (host) host.appendChild(def);
+      else btn.parentNode.insertBefore(def, btn.nextSibling);
+
+      btn.addEventListener('click', function () {
+        var open = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+        def.hidden = open;
+      });
+
+      done[term] = true;
+    });
+  })();
+
   /* ---------------- legacy #/hash URLs -> real paths ----------------
      The first version of this site was a single page with hash routes.
      Anything already shared on WhatsApp still points at #/immunotherapy
