@@ -1,8 +1,6 @@
   <section class="first"><div class="wrap">
     <div class="shead" style="margin-bottom:0">
-      <span class="eyebrow">Book an appointment</span>
-      <h1 style="font-size:clamp(2.2rem,5vw,3.4rem);max-width:20ch">Pick a time, then send it on WhatsApp.</h1>
-      <p class="lede">Fill this in and it opens WhatsApp with everything written out — you just press send. Nothing you type here is stored on this website.</p>
+      <h1 style="font-size:clamp(2.2rem,5vw,3.4rem)">Book an appointment</h1>
     </div>
   </div></section>
 
@@ -61,20 +59,21 @@
             <legend>Preferred time <span class="req" aria-hidden="true">*</span></legend>
             <p class="hint" style="margin:0 0 14px">Consultations run 11 am to 6 pm, Monday to Saturday.</p>
             <div class="slotgrid">
-              <label class="slot"><input type="radio" name="slot" value="11:15 – 11:45 am"><span>11:15 am</span></label>
-              <label class="slot"><input type="radio" name="slot" value="11:45 am – 12:15 pm"><span>11:45 am</span></label>
-              <label class="slot"><input type="radio" name="slot" value="12:15 – 12:45 pm"><span>12:15 pm</span></label>
-              <label class="slot"><input type="radio" name="slot" value="12:45 – 1:15 pm"><span>12:45 pm</span></label>
-              <label class="slot"><input type="radio" name="slot" value="1:15 – 1:45 pm"><span>1:15 pm</span></label>
-              <label class="slot"><input type="radio" name="slot" value="1:45 – 2:15 pm"><span>1:45 pm</span></label>
-              <label class="slot"><input type="radio" name="slot" value="2:15 – 2:45 pm"><span>2:15 pm</span></label>
-              <label class="slot"><input type="radio" name="slot" value="2:45 – 3:15 pm"><span>2:45 pm</span></label>
-              <label class="slot"><input type="radio" name="slot" value="3:15 – 3:45 pm"><span>3:15 pm</span></label>
-              <label class="slot"><input type="radio" name="slot" value="3:45 – 4:15 pm"><span>3:45 pm</span></label>
-              <label class="slot"><input type="radio" name="slot" value="4:15 – 4:45 pm"><span>4:15 pm</span></label>
-              <label class="slot"><input type="radio" name="slot" value="4:45 – 5:15 pm"><span>4:45 pm</span></label>
-              <label class="slot"><input type="radio" name="slot" value="5:15 – 5:45 pm"><span>5:15 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="11:15 – 11:45 am" data-start="675"><span>11:15 am</span></label>
+              <label class="slot"><input type="radio" name="slot" value="11:45 am – 12:15 pm" data-start="705"><span>11:45 am</span></label>
+              <label class="slot"><input type="radio" name="slot" value="12:15 – 12:45 pm" data-start="735"><span>12:15 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="12:45 – 1:15 pm" data-start="765"><span>12:45 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="1:15 – 1:45 pm" data-start="795"><span>1:15 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="1:45 – 2:15 pm" data-start="825"><span>1:45 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="2:15 – 2:45 pm" data-start="855"><span>2:15 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="2:45 – 3:15 pm" data-start="885"><span>2:45 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="3:15 – 3:45 pm" data-start="915"><span>3:15 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="3:45 – 4:15 pm" data-start="945"><span>3:45 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="4:15 – 4:45 pm" data-start="975"><span>4:15 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="4:45 – 5:15 pm" data-start="1005"><span>4:45 pm</span></label>
+              <label class="slot"><input type="radio" name="slot" value="5:15 – 5:45 pm" data-start="1035"><span>5:15 pm</span></label>
             </div>
+            <p class="hint" id="slot-note" hidden style="margin-top:12px">Today&#39;s appointments have already finished. Please choose another day — or <a href="https://wa.me/919701864848?text=Hello%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">message the clinic</a> if it is urgent.</p>
             <p class="err" id="err-slot" hidden>Please pick a time.</p>
           </fieldset>
 
@@ -102,7 +101,7 @@
           </div>
 
           <div class="formfoot">
-            <button type="submit" class="btn lg">Open WhatsApp with these details</button>
+            <button type="submit" class="btn lg dark">Submit</button>
             <p class="hint" style="margin-top:14px"><strong style="color:var(--ink);font-weight:500">Your confirmation is sent on WhatsApp</strong>, usually the same day. Nothing leaves your device until you press send. See the <a href="/privacy/">privacy notice</a>.</p>
           </div>
         </div>

@@ -91,6 +91,38 @@
     horizon.setMonth(horizon.getMonth() + 3);
     date.max = iso(horizon);
 
+    var slotInputs = Array.prototype.slice.call(
+      bookform.querySelectorAll('input[name=slot]'));
+    var slotNote = document.getElementById('slot-note');
+
+    function sameDay(a, b) {
+      return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() &&
+             a.getDate() === b.getDate();
+    }
+
+    // A slot on today's date that has already started cannot be booked. Without
+    // this you could sit down at 7pm and request this morning's 11:15.
+    function refreshSlots() {
+      var now = new Date();
+      var isToday = date.value && sameDay(new Date(date.value + 'T00:00:00'), now);
+      var minutesNow = now.getHours() * 60 + now.getMinutes();
+      var left = 0;
+
+      slotInputs.forEach(function (inp) {
+        var gone = isToday && Number(inp.getAttribute('data-start')) <= minutesNow;
+        inp.disabled = gone;
+        if (gone && inp.checked) inp.checked = false;
+        if (!gone) left++;
+      });
+
+      if (slotNote) {
+        slotNote.hidden = !(isToday && left === 0);
+      }
+    }
+
+    date.addEventListener('change', refreshSlots);
+    refreshSlots();
+
     function fieldError(el, show, message) {
       var msg = el.closest('.field').querySelector('.err');
       if (msg) {
@@ -145,10 +177,17 @@
       else if (sunday) dateMsg = 'The clinic is closed on Sundays — please pick another day.';
       check(date, !!dv && !past && !sunday, dateMsg);
 
+      refreshSlots();                       // the clock may have moved mid-form
+      if (slot && slot.disabled) slot = null;
       if (!slot) {
-        document.getElementById('err-slot').hidden = false;
+        var se = document.getElementById('err-slot');
+        se.textContent = bookform.querySelector('input[name=slot]:not(:disabled)')
+          ? 'Please pick a time.'
+          : 'Today\u2019s appointments have finished — please choose another day.';
+        se.hidden = false;
         ok = false;
-        if (!firstBad) firstBad = bookform.querySelector('input[name=slot]');
+        if (!firstBad) firstBad = bookform.querySelector('input[name=slot]:not(:disabled)') ||
+                                  document.getElementById('bf-date');
       }
 
       if (!ok) {
