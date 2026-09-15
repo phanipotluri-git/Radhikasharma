@@ -171,6 +171,107 @@
     });
   }
 
+  /* ---------------- allergy self-check ----------------
+     A sorting tool, not a diagnostic one. It scores the PATTERN of symptoms
+     against the pattern allergy usually takes, and says only whether testing
+     is likely to be worthwhile. It never names a condition and never tells
+     anyone they do or do not have allergy. Runs entirely in the browser;
+     nothing is recorded or transmitted. */
+  var checkform = document.getElementById('checkform');
+  if (checkform) {
+    var QUESTIONS = [
+      { q: 'Does your nose or do your eyes <b>itch</b>?',
+        help: 'Itch is the single most useful clue. Infections rarely itch.',
+        yes: 2 },
+      { q: 'Do you sneeze in <b>runs</b> — five, ten, fifteen in a row?',
+        help: 'Rather than an occasional one-off sneeze.',
+        yes: 2 },
+      { q: 'Is the discharge from your nose <b>clear and watery</b>?',
+        help: 'As opposed to thick, yellow or green.',
+        yes: 1, no: -1 },
+      { q: 'Do symptoms reliably start in a <b>particular place, season or situation</b>?',
+        help: 'The first hour after waking, while cleaning, outdoors, near an animal, in the monsoon.',
+        yes: 2 },
+      { q: 'Have symptoms been going on <b>more than six weeks</b>, or do they keep coming back?',
+        help: 'Allergy recurs. A single cold resolves and does not return the same way.',
+        yes: 1 },
+      { q: 'Does anyone in your family have <b>allergy, asthma or eczema</b>?',
+        help: 'Allergic conditions run strongly in families.',
+        yes: 1 },
+      { q: 'Have you had a <b>fever</b> with these symptoms?',
+        help: 'Fever points towards infection, not allergy.',
+        yes: -2 }
+    ];
+
+    var list = document.getElementById('q-list');
+    QUESTIONS.forEach(function (item, i) {
+      var f = document.createElement('fieldset');
+      f.className = 'slots question';
+      f.innerHTML =
+        '<legend>' + (i + 1) + '. ' + item.q + '</legend>' +
+        '<p class="hint" style="margin:0 0 12px">' + item.help + '</p>' +
+        '<div class="slotgrid answers">' +
+        '<label class="slot"><input type="radio" name="q' + i + '" value="yes"><span>Yes</span></label>' +
+        '<label class="slot"><input type="radio" name="q' + i + '" value="no"><span>No</span></label>' +
+        '<label class="slot"><input type="radio" name="q' + i + '" value="unsure"><span>Not sure</span></label>' +
+        '</div>';
+      list.appendChild(f);
+    });
+
+    var result = document.getElementById('result');
+
+    checkform.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var score = 0, answered = 0;
+      QUESTIONS.forEach(function (item, i) {
+        var picked = checkform.querySelector('input[name=q' + i + ']:checked');
+        if (!picked) return;
+        answered++;
+        if (picked.value === 'yes') score += (item.yes || 0);
+        else if (picked.value === 'no') score += (item.no || 0);
+      });
+
+      if (answered < QUESTIONS.length) {
+        result.hidden = false;
+        result.className = 'nutshell';
+        result.innerHTML = '<span class="eyebrow">Almost there</span>' +
+          '<p style="margin-top:10px">Please answer all ' + QUESTIONS.length +
+          ' questions — "Not sure" counts as an answer.</p>';
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      var head, body;
+      if (score >= 6) {
+        head = 'This has the shape of allergy';
+        body = '<p>Itch, sneezing in runs, clear discharge and a symptom pattern tied to a place or a season together describe allergic rhinitis more often than anything else. That does not mean you have it — but it does mean <strong>testing is likely to tell you something useful</strong>, because there is a specific question for it to answer.</p>' +
+               '<p>The next step is a consultation with skin prick testing, which is read and explained in the same visit.</p>';
+      } else if (score >= 2) {
+        head = 'Genuinely unclear from the pattern alone';
+        body = '<p>Some of what you describe fits allergy and some of it does not. This is the commonest result, and it is exactly the situation a consultation is for — the history is more diagnostic than any single test, and a test ordered without one usually produces a list of positives that mean nothing.</p>' +
+               '<p>Worth being seen. Whether you need testing at all is part of what gets decided.</p>';
+      } else {
+        head = 'This looks less like allergy';
+        body = '<p>Fever, thick coloured discharge, no itch and no repeating pattern point away from allergy and towards infection, non-allergic rhinitis, or irritation from dust, smoke or pollution — none of which show up on an allergy test or respond to allergy treatment.</p>' +
+               '<p>That is worth knowing, because it saves you paying for testing that would not have helped. If symptoms are persistent or troubling, they still deserve a proper look — they just may not be an allergy problem.</p>';
+      }
+
+      result.hidden = false;
+      result.className = 'nutshell';
+      result.innerHTML =
+        '<span class="eyebrow">What this suggests</span>' +
+        '<h3 style="margin:10px 0 14px;font-size:1.35rem">' + head + '</h3>' +
+        body +
+        '<p style="margin-top:16px;font-size:14px;color:var(--muted)"><strong>This is not a diagnosis and not medical advice.</strong> It is a description of how closely your answers match a typical pattern. Only a consultation can tell you what is actually going on.</p>' +
+        '<div class="cta-row" style="margin-top:20px">' +
+        '<a class="btn" href="/book/">Book an appointment</a>' +
+        '<a class="btn ghost" href="/allergy-testing/">How testing works</a>' +
+        '</div>';
+      result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
   /* ---------------- legacy #/hash URLs -> real paths ----------------
      The first version of this site was a single page with hash routes.
      Anything already shared on WhatsApp still points at #/immunotherapy

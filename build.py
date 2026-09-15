@@ -131,6 +131,18 @@ P = [
      "Consultant Pulmonologist and Allergy Specialist in Jubilee Hills, Hyderabad.",
      "/about/"),
 
+    ("/sleep/", "sleep",
+     "Sleep Apnoea & Snoring · " + CLINIC,
+     "Snoring, daytime tiredness and sleep apnoea assessed in Jubilee Hills, Hyderabad. "
+     "How sleep-disordered breathing is diagnosed, and what CPAP and the alternatives involve.",
+     "/sleep/"),
+
+    ("/allergy-check/", "allergy-check",
+     "Is It Allergy? A Two-Minute Check · " + CLINIC,
+     "Seven questions about the pattern of your symptoms, to tell you whether allergy testing "
+     "is likely to be worth your time. Not a diagnosis \u2014 a sorting tool.",
+     "/allergy-testing/"),
+
     ("/book/", "book",
      "Book an Appointment · " + CLINIC,
      "Book an appointment at Dr. Radhika's Allergy & Lung Clinic, Jubilee Hills, Hyderabad. "
