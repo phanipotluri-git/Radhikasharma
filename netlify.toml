@@ -2,10 +2,24 @@
   command = "python3 build.py"
   publish = "dist"
 
+# site.<hash>.css / site.<hash>.js carry a content hash in the filename, so a
+# new build produces a new URL and a year-long immutable cache is safe.
+[[headers]]
+  for = "/assets/site.*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/site.*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Images and icons keep their plain names, so they must stay revalidatable --
+# an immutable cache on an unhashed filename cannot be corrected later.
 [[headers]]
   for = "/assets/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400, must-revalidate"
 
 [[headers]]
   for = "/*"

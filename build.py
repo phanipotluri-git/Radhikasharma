@@ -9,6 +9,7 @@ canonical and structured data.
     python3 build.py --serve    # build, then serve dist/ on :8000
 """
 
+import hashlib
 import json
 import os
 import re
@@ -214,6 +215,28 @@ ARTICLES = [
 ]
 
 
+def fingerprint_assets():
+    """Copy assets to dist, giving site.css and site.js content-hashed names.
+
+    Without this the filenames never change, so the long immutable cache
+    header served for /assets/* pins every returning visitor to whichever
+    stylesheet they downloaded first -- new HTML, year-old CSS.
+    """
+    src_dir = os.path.join(SRC, "assets")
+    out_dir = os.path.join(DIST, "assets")
+    shutil.copytree(src_dir, out_dir)
+
+    renamed = {}
+    for name in ("site.css", "site.js"):
+        path = os.path.join(out_dir, name)
+        digest = hashlib.sha256(open(path, "rb").read()).hexdigest()[:10]
+        stem, ext = os.path.splitext(name)
+        hashed = "%s.%s%s" % (stem, digest, ext)
+        os.rename(path, os.path.join(out_dir, hashed))
+        renamed["/assets/" + name] = "/assets/" + hashed
+    return renamed
+
+
 def esc(s):
     """Escape for an HTML attribute value."""
     return (s.replace("&", "&amp;").replace("<", "&lt;")
@@ -350,6 +373,8 @@ def main():
         shutil.rmtree(DIST)
     os.makedirs(DIST)
     layout = open(os.path.join(SRC, "layout.html"), encoding="utf-8").read()
+    for plain, hashed in fingerprint_assets().items():
+        layout = layout.replace(plain, hashed)
 
     written = []
     for path, frag, title, desc, section in P:
@@ -361,7 +386,6 @@ def main():
         written.append(path)
         print("  %-34s %6d  %s" % (path, n, out))
 
-    shutil.copytree(os.path.join(SRC, "assets"), os.path.join(DIST, "assets"))
     write_extras(written)
 
     # 404 gets the full shell, so a stray URL still shows the nav and the phone number

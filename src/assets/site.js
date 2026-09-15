@@ -135,10 +135,15 @@
             'Please give a ten-digit mobile number.');
 
       var dv = date.value;
-      var sunday = dv && new Date(dv + 'T00:00:00').getDay() === 0;
-      check(date, !!dv && !sunday,
-            sunday ? 'The clinic is closed on Sundays — please pick another day.'
-                   : 'Please choose a date.');
+      var chosen = dv ? new Date(dv + 'T00:00:00') : null;
+      var midnight = new Date();
+      midnight.setHours(0, 0, 0, 0);
+      var past = chosen && chosen < midnight;
+      var sunday = chosen && chosen.getDay() === 0;
+      var dateMsg = 'Please choose a date.';
+      if (past) dateMsg = 'That date has already passed — please pick a day from today onwards.';
+      else if (sunday) dateMsg = 'The clinic is closed on Sundays — please pick another day.';
+      check(date, !!dv && !past && !sunday, dateMsg);
 
       if (!slot) {
         document.getElementById('err-slot').hidden = false;
