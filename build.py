@@ -80,7 +80,7 @@ P = [
     ("/", "home",
      CLINIC,
      "Consultant-led allergy testing, immunotherapy, asthma and lung care in Jubilee Hills, "
-     "Hyderabad. Proper testing first, then a plan that can end the daily antihistamine.",
+     "Hyderabad. Proper testing first, then treatment aimed at the cause.",
      "/"),
 
     ("/allergy-testing/", "allergy-testing",
