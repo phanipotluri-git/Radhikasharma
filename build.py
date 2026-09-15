@@ -131,6 +131,24 @@ P = [
      "Consultant Pulmonologist and Allergy Specialist in Jubilee Hills, Hyderabad.",
      "/about/"),
 
+    ("/book/", "book",
+     "Book an Appointment · " + CLINIC,
+     "Book an appointment at Dr. Radhika's Allergy & Lung Clinic, Jubilee Hills, Hyderabad. "
+     "Fill in the form and it opens WhatsApp with your details ready to send.",
+     "/"),
+
+    ("/privacy/", "privacy",
+     "Privacy Notice · " + CLINIC,
+     "What this website does with your information: no accounts, no tracking, no database. "
+     "The booking form sends nothing to us \u2014 you send it yourself from your own WhatsApp.",
+     "/"),
+
+    ("/terms/", "terms",
+     "Terms & Medical Disclaimer · " + CLINIC,
+     "General information, not medical advice. Reading this site does not create a "
+     "doctor-patient relationship. Emergency guidance and practitioner registration details.",
+     "/"),
+
     ("/contact/", "contact",
      "Contact & Directions · " + CLINIC,
      "Dr. Radhika's Allergy & Lung Clinic, 2nd Floor Youniq, Road No. 45, Jubilee Hills, Hyderabad "

@@ -72,6 +72,51 @@
     });
   }
 
+  /* ---------------- booking form ----------------
+     Deliberately has no server side. The form builds a WhatsApp message and
+     hands it to the patient's own WhatsApp to send, so no name, number or
+     reason for visiting is ever transmitted to, or stored by, this site. */
+  var bookform = document.getElementById('bookform');
+  if (bookform) {
+    var CLINIC_NUMBER = '919701864848';
+
+    bookform.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var name = document.getElementById('bf-name');
+      var err = document.getElementById('err-name');
+      if (!name.value.trim()) {
+        err.hidden = false;
+        name.setAttribute('aria-invalid', 'true');
+        name.focus();
+        return;
+      }
+      err.hidden = true;
+      name.removeAttribute('aria-invalid');
+
+      var val = function (id) { return document.getElementById(id).value.trim(); };
+      var lines = [
+        "Appointment request — Dr. Radhika's Allergy & Lung Clinic",
+        '',
+        'Name: ' + name.value.trim(),
+        'For: ' + val('bf-who'),
+        'About: ' + val('bf-about'),
+        'Preferred: ' + val('bf-when')
+      ];
+      var note = val('bf-note');
+      if (note) lines.push('Note: ' + note);
+
+      window.open('https://wa.me/' + CLINIC_NUMBER + '?text=' +
+                  encodeURIComponent(lines.join('\n')), '_blank', 'noopener');
+    });
+
+    // clear the error as soon as they start typing
+    document.getElementById('bf-name').addEventListener('input', function () {
+      document.getElementById('err-name').hidden = true;
+      this.removeAttribute('aria-invalid');
+    });
+  }
+
   /* ---------------- legacy #/hash URLs -> real paths ----------------
      The first version of this site was a single page with hash routes.
      Anything already shared on WhatsApp still points at #/immunotherapy

@@ -33,6 +33,30 @@ Page titles, meta descriptions and URLs are in the `P` and `ARTICLES` tables
 near the top of `build.py`. Adding a page means adding a fragment in
 `src/pages/` and one row to the relevant table; the sitemap updates itself.
 
+## Booking
+
+`/book/` collects a few details and hands them to WhatsApp. It has no server
+side: the form builds a message, opens `wa.me` with it pre-filled, and the
+patient presses send from their own WhatsApp. Nothing is POSTed, nothing is
+stored, and the clinic's number stays usable in the normal WhatsApp app.
+
+Automated confirmations *to* the patient would need the WhatsApp Business Cloud
+API, which requires a second phone number dedicated to it (a number registered
+to the API can no longer be used in the WhatsApp app), Meta business
+verification, and message templates approved by Meta. That trade was considered
+and declined; if it is ever revisited, the privacy notice needs rewriting first,
+because patient data would then pass through a server.
+
+The handler is in `src/assets/site.js`; the clinic number is the
+`CLINIC_NUMBER` constant there and in the `wa.me` links in `src/layout.html`.
+
+## Policies
+
+`/privacy/` and `/terms/` are linked from the footer of every page. They
+describe what the site actually does — no analytics, no cookies, no database,
+Google Fonts as the only third-party request. **If the site ever starts
+collecting anything, both pages must be updated before that ships.**
+
 ## Deploying
 
 The site is a folder of static files. Any static host works.
