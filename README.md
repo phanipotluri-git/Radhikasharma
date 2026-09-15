@@ -56,18 +56,14 @@ enable HTTPS.
 
 These need information only the clinic has:
 
-- **A photograph of Dr. Radhika.** Save it as `src/assets/portrait.webp`
-  (portrait crop, 900×1200 or larger) and follow the comment in
-  `src/pages/about.html` to swap out the typographic stand-in currently on the
-  About page.
-- **Map coordinates.** `build.py` deliberately omits `geo` from the clinic's
-  structured data rather than guess at a latitude and longitude. Take the exact
-  pair from the clinic's Google Business Profile and add them to
-  `CLINIC_SCHEMA`.
-- **Fee range.** `priceRange` is omitted for the same reason. Add it if the
-  clinic is willing to publish a band.
-- **Google Business Profile and Search Console.** Claim both, and submit
-  `https://www.allergylungclinic.com/sitemap.xml` in Search Console.
+- **A higher-resolution photograph.** The current `src/assets/portrait.webp` is
+  400×533, cropped from the only source available. It is sharp enough at the
+  size it is displayed, but soft on high-density screens. If a larger original
+  exists, crop it 3:4 and replace the file — nothing else needs changing.
+- **Fee range.** `priceRange` is omitted from `CLINIC_SCHEMA` rather than
+  guessed at. Add it if the clinic is willing to publish a band.
+- **Google Business Profile.** Claim it if not already done; for a local clinic
+  it typically drives more patients than organic search.
 - **Analytics.** Nothing is installed and nothing tracks visitors today. If you
   want visit numbers, add a privacy-friendly tag (Plausible, Fathom) or GA4 to
   `src/layout.html`.

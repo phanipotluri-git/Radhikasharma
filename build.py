@@ -42,6 +42,7 @@ PHYSICIAN = {
         "Diploma in Allergy & Asthma (D.A.A), CMC Vellore",
         "Fellowship in Interventional Pulmonology",
     ],
+    "image": SITE + "/assets/portrait.webp",
 }
 
 CLINIC_SCHEMA = {
@@ -54,6 +55,10 @@ CLINIC_SCHEMA = {
     "medicalSpecialty": ["Allergy", "Pulmonary"],
     "address": ADDRESS,
     "hasMap": "https://maps.google.com/?q=Youniq,+Road+No.+45,+Jubilee+Hills,+Hyderabad+500033",
+    # Decoded from the clinic's Google Business Profile Plus Code 7J9WCCG5+6C
+    # (short form CCG5+6C). Verified by re-encoding: the point round-trips to the
+    # same code, in a 14m cell on Road No. 45.
+    "geo": {"@type": "GeoCoordinates", "latitude": 17.425562, "longitude": 78.408563},
     "openingHoursSpecification": [{
         "@type": "OpeningHoursSpecification",
         "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
